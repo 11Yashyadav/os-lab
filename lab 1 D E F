@@ -1,0 +1,59 @@
+1.D) EXECV SYSTEM CALL
+/* execv system call */
+#include<stdio.h>
+#include<sys/types.h>
+main(int argc,char *argv[]){
+printf("before execv\n");
+execv("/bin/ls",argv);
+printf("after execv\n");}
+
+
+1.E )Directory Management (Directory Hierarchy):
+#include<stdio.h>
+#include<dirent.h>
+#include<errno.h>
+#include<fcntl.h>
+#include<unistd.h>
+int main(int argc,char *argv[]) {
+struct dirent *direntp; DIR *dirp; if(argc!=2) {
+printf("ussage %s directory name \n",argv[0]);
+return 1;
+}
+if((dirp=opendir(argv[1]))==NULL) {
+perror("Failed to open directory \n");
+return 1; }
+while((direntp=readdir(dirp))!=NULL)
+printf("%s\n",direntp->d_name);
+while((closedir(dirp)==-1)&&(errno==EINTR));
+return 0;
+}
+
+
+
+1.F) File Management:
+#include<stdio.h>
+#include<unistd.h>
+#include<string.h>
+#include<fcntl.h>
+int main( ) {
+int fd[2];
+char buf1[25]= ”just a test\n”; char
+buf2[50];
+fd[0]=open(“file1”, O_RDWR);
+fd[1]=open(“file2”, O_RDWR);
+write(fd[0], buf1, strlen(buf1));
+printf(“\n Enter the text
+now....”); gets(buf1);
+write(fd[0], buf1,
+strlen(buf1));
+lseek(fd[0],
+SEEK_SET, 0);
+read(fd[0], buf2,
+sizeof(buf1));
+write(fd[1], buf2,
+sizeof(buf2));
+close(fd[0]);
+close(fd[1]);
+printf(“\n”);
+return0;
+}
